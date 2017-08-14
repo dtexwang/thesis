@@ -1,0 +1,401 @@
+% !TeX root = main.tex
+% !TeX spellcheck = en_US
+% !TeX encoding = UTF-8
+
+% This document typesets the Ph.D. dissertation of 
+% David T. Wang, MIT/WHOI Joint Program, June 2017.
+% 
+% Document compiled with pdfLaTeX + BibLaTeX/Biber 
+% from the TeX Live 2016 distribution on Windows 7.
+
+\documentclass[11pt,twoside,final]{memoir} 	% draft, ms, final
+%	\nonzeroparskip
+	
+\usepackage{etoolbox}
+
+%Chemistry
+\usepackage[version=4]{mhchem}
+%\mhchemoptions{textfontcommand=\libertineLF}
+%\usepackage{chemformula}
+
+%Page setup
+%\usepackage[letterpaper, top=1.45in, bottom=1.0in, left=1.0in, right=1.0in, showframe=false]{geometry}
+%\usepackage[letterpaper, top=1.4in, bottom=1.2in, left=1.1in, right=1.1in, showframe=false]{geometry}
+\usepackage[letterpaper, top=1.2in, bottom=1.0in, left=1.05in, right=1.05in, showframe=false]{geometry}
+%\addtolength{\footskip}{1	ex} 
+
+\usepackage{lscape}		% lscape rotates stuff in environment {landscape}, pdflscape rotates the page too
+\usepackage{multicol} \setlength{\columnsep}{10pt}
+
+\makepagestyle{myruled}
+	\makeheadrule {myruled}{\textwidth}{\normalrulethickness}
+%	\makefootrule {myruled}{\textwidth}{\normalrulethickness}{\footruleskip}
+%	\makefootrule{myruled}{\textwidth}{\normalrulethickness}{1ex}
+	\makeheadfootruleprefix{myruled}{\vspace*{3pt}}{}
+	\makeevenhead {myruled}{\small\scshape\leftmark}{} {}
+	\makeoddhead {myruled}{}{}{\small\itshape\rightmark}
+	\makeevenfoot {myruled}{}{\figureversion{osf}\small\swshape \thepage} {}
+	\makeoddfoot {myruled}{}{\figureversion{osf}\small\swshape \thepage} {}
+	\makeatletter % because of \@chapapp
+	\makepsmarks {myruled}{
+		\nouppercaseheads
+		\createmark {chapter} {both} {shownumber}{\@chapapp\ }{. \ }
+		\createmark {section} {right}{shownumber}{} {. \ }
+		\createmark {subsection} {right}{shownumber}{} {. \ }
+%		\createmark {subsubsection}{right}{shownumber}{} {. \ }
+		\createplainmark {toc} {both} {\contentsname}
+		\createplainmark {lof} {both} {\listfigurename}
+		\createplainmark {lot} {both} {\listtablename}
+		\createplainmark {bib} {both} {\bibname}
+		\createplainmark {index} {both} {\indexname}
+		\createplainmark {glossary} {both} {\glossaryname}
+	}
+	\makeatother
+%	\setsecnumdepth{subsubsection}
+	\pagestyle{myruled}
+
+%\pagestyle{ruled}
+	\makeevenfoot {plain}{}{\figureversion{osf}\small\swshape \thepage} {}
+	\makeoddfoot {plain}{}{\figureversion{osf}\small\swshape \thepage} {}
+%\sloppybottom
+
+
+
+%Font
+\usepackage[LGR,T1]{fontenc}   
+\usepackage[utf8]{inputenc}    % Load inputenc after fontenc.  https://tex.stackexchange.com/a/34046
+\usepackage{textgreek}
+%\usepackage{arev}
+\usepackage[lf,mathtabular,minionint]{MinionPro}
+%\usepackage[lf,proportional]{libertine}
+\usepackage{gensymb}
+\renewcommand*{\sfdefault}{phv}
+\usepackage[lf]{MyriadPro}
+\usepackage[scale=0.9]{inconsolata}
+
+%Typography
+\usepackage{microtype}
+\input{glyphtounicode}	% fix ligatures ff, ffi, etc.
+	\pdfgentounicode=1
+\usepackage[super]{nth}
+\usepackage[alsoload=synchem]{siunitx}
+	\sisetup{detect-all}
+\usepackage{enumitem}
+	\setlist{nosep} % or \setlist{noitemsep} to leave space around whole list
+\usepackage[hang,flushmargin,multiple]{footmisc}  %turned off [symbol*] option, decided to go with alphabetic (\alph) footnote markers, better compatibility with sans %turned off [para] option, incompatible with multicol
+	\setlength\footnotemargin{1ex} %necessary, because otherwise, footnote indentation will be affected by width of footnote marker (e.g. "w" vs "i")
+%	\renewcommand*{\footnotelayout}{\footnotesize\sffamily} %makes footnotes sans serif
+%\usepackage[fragile]{bigfoot}
+%  \DeclareNewFootnote[para]{default}
+
+%% unnumbered footnotes
+	\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+%MISCELLANEOUS
+\usepackage{verbatim}
+\usepackage{lipsum}
+\usepackage{xcolor, color, calc}
+\providecommand\phantomsection{}
+\usepackage{pdfpages}
+
+%Math
+\usepackage{nicefrac}
+\usepackage{widetext}% needs packages "flushend" & "cuted" of "sttools"
+% bundle, which perhaps must separately be installed
+%http://tex.stackexchange.com/a/151507 - How to typeset wide equation spannuing 2col
+\usepackage{xfrac}
+\usepackage{amsmath,amssymb}
+
+
+%Tables
+\usepackage{rotating}
+\usepackage{dcolumn} 
+	\newcolumntype{d}[1]{D{.}{.}{#1}}
+\usepackage{longtable} 	% typesetting longtables may require three or more passes through pdflatex
+\usepackage{booktabs}
+\usepackage[toc,eqno,enum,bib,lineno]{tabfigures}
+\usepackage{multirow}
+\AtBeginEnvironment{tabular}{%
+	\figureversion{lf,tab} 
+}
+\AtBeginEnvironment{longtable}{%
+	\figureversion{lf,tab} 
+}
+\usepackage[font=small]{caption} 
+	\DeclareCaptionLabelFormat{bold}{\bfseries #1~#2}
+	\DeclareCaptionLabelSeparator{bar}{\:\:|\:\:}
+	\captionsetup{labelformat=bold,labelsep=bar}
+	\DeclareCaptionFormat{myformat}{#1#2#3\hrulefill}
+	\DeclareCaptionFormat{myregular}{#1#2#3}
+	\DeclareCaptionFormat{myruletop}{\hrule\protect\\\vspace{10pt} #1#2#3}
+	\captionsetup[SCfigure]{format=myformat}		% hrule below caption for SCfigures
+\usepackage[flushleft]{threeparttable}	% for footnotes https://tex.stackexchange.com/a/327385, https://tex.stackexchange.com/a/57170
+\usepackage{threeparttablex}
+	\makeatletter 
+	\g@addto@macro\TPT@defaults{\small} 
+	\makeatother
+\let\oldtabular\tabular 
+	\renewcommand{\tabular}{\small\oldtabular}
+\let\oldtabularx\tabularx 
+	\renewcommand{\tabularx}{\small\oldtabularx}
+\let\oldlongtable\longtable
+	\renewcommand{\longtable}{\small\oldlongtable}
+
+%Figures
+%\usepackage[toc,eqno,enum,bib,lineno]{tabfigures}  %% MODIFIED ADDED to use tabular figures in other places (besides tables; recall, must do: \figureversion{tabular} before every table! otherwise lining figures would be used)
+\usepackage{graphicx,grffile}
+\usepackage{epstopdf}
+\usepackage{sidecap}
+	\renewcommand{\sidecaptionrelwidth}{0.85}
+	\renewcommand{\sidecaptionsep}{4ex}
+
+%Sectioning
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setsecnumdepth{subsubsection}
+%\usepackage{chngcntr}
+%	\counterwithin*{section}{chapter}
+\usepackage{titlesec}
+%	\titleformat{\chapter}
+%		{\Large\bfseries} % format
+%		{\huge\thechapter}                % label
+%		{20pt}             % sep
+%		{\huge}           % before-code
+	\titleformat{\section}{\normalsize\bfseries\sffamily}{\thesection}{1em}{\MakeUppercase} 
+	\titleformat*{\subsection}{\normalsize\bfseries\sffamily}
+	\titleformat*{\subsubsection}{\small\bfseries\itshape\sffamily \color{black} 
+		%\fontfamily{lmss}\selectfont
+		}
+\setbeforeparaskip{1.5ex plus 1ex minus .2ex}
+\setparaheadstyle{\itshape\raggedright}
+\aliaspagestyle{cleared}{chapter}
+%\chapterstyle{pedersen} 
+%\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+\makeatletter
+\makechapterstyle{combined}{
+%	\setlength{\midchapskip}{-60pt}
+%	\setlength{\afterchapskip}{2.5cm}
+	\renewcommand\afterchapternum{\par\nobreak\vskip -26pt}
+	\renewcommand*{\printchaptername}{}
+	\renewcommand*{\chapnumfont}{\normalfont\bfseries\fontsize{80}{0}\selectfont}
+
+	\renewcommand*{\printchapternum}{\flushright\chapnumfont\textcolor[rgb]{.647,.129,.149}{\raisebox{2cm}[0pt][0pt]{\smash{{\Large\scshape \@chapapp\;\;}\thechapter}}}}
+
+	\renewcommand*{\chaptitlefont}{\normalfont\huge\itshape}
+	\renewcommand*{\printchaptertitle}[1]{%
+		\raggedright\chaptitlefont\parbox[t]{\textwidth-0cm}{%
+			\microtypesetup{protrusion=false}%
+			\raggedright##1}}
+}
+\makeatother
+\chapterstyle{combined}
+%\chapterstyle{lyhne}
+%\headstyles{wilsondob}
+
+\usepackage{abstract}
+%	\renewcommand{\abstractname}{\normalfont\sffamily\footnotesize \textperiodcentered\;\textperiodcentered\;\textperiodcentered\;\textperiodcentered\;\textperiodcentered\quad\!\! ABSTRACT } 
+	\renewcommand{\abstractname}{\normalfont\sffamily\footnotesize ABSTRACT } 
+%	\renewcommand{\absnamepos}{flushleft}
+	\renewcommand{\absnamepos}{center}
+	
+\aliaspagestyle{afterpart}{plain}	% put pagenum on even page following appendixpage*
+	
+%Bibliography
+%\usepackage[style=science,backend=bibtex8,article-title=true]{biblatex}
+%\bibliography{thesis.bib}
+%\usepackage[style=authoryear, backend=bibtex, maxcitenames=2, maxbibnames=99, natbib=true, firstinits=true, isbn=false, url=false, doi=false, eprint=false]{biblatex}
+%\bibliography{thesis.bib}
+%\renewbibmacro{in:}{%
+%	\ifentrytype{article}{}{%
+%		\printtext{\bibstring{in}\intitlepunct}}}
+\usepackage[style=authoryear,%-icomp,% articletitle=true,
+			backend=biber,		% biber handles sorting much better
+			uniquename=false, 	% If two different authors have the same surname, biblatex adds the first name to identify each of them.  This turns that behavior off.
+			uniquelist=false,	% https://tex.stackexchange.com/a/69030
+%			defernumbers,
+%			bibstyle=numeric,
+%			bibencoding=utf8,	% for Chinese characterers
+%			natbib=true,
+			sorting=ynt]{biblatex}
+\setlength\bibitemsep{0.2\baselineskip}
+\assignrefcontextentries[]{*}
+\bibliography{thesis.bib}
+\renewbibmacro{in:}{%
+	\ifentrytype{article}{}{%
+		\printtext{\bibstring{in}\intitlepunct}}}
+\DeclareFieldFormat*{citetitle}{#1} 	% remove quotes around citetitle
+\DeclareFieldFormat*{citeyear}{{\bfseries #1}}
+
+%\appto\bibsetup{\let\x\chinesechar}
+%\newcommand\chinesechar[1]{\includegraphics[height=\fontcharht\font`T]{pia#1}}
+
+%Cross-links
+\definecolor{myred}{rgb}{.647,.129,.149} 
+\usepackage[pdfencoding=auto, 
+			psdextra, 
+			bookmarksnumbered, 
+			colorlinks=true, 
+			linktocpage=true,
+			allcolors=myred,
+			urlcolor=cyan]{hyperref}
+\hypersetup{pdfauthor={David T. Wang},
+	pdftitle={The Geochemistry of Methane Isotopologues},
+	pdfsubject={Ph.D. thesis, MIT/WHOI Joint Program, June 2017},
+	pdfkeywords={methane biogeochemistry, clumped isotopes, hydrogen exchange}}
+\usepackage{memhfixc}
+\def\equationautorefname{Eqn.}
+\def\figureautorefname{Fig.}
+\def\chapterautorefname{Chapter}
+\def\sectionautorefname{§}
+\def\subsectionautorefname{§}
+\def\subsubsectionautorefname{§}
+
+\makeatletter	% Fixes an issue with starred section* and hyperref for \nameref, https://tex.stackexchange.com/a/123667/23509.  May require multiple (~5?) runs of pdflatex to make it work.
+\def\ttl@useclass#1#2{%
+	\@ifstar
+	{\ttl@labeltrue\@dblarg{#1{#2}}}% {\ttl@labelfalse#1{#2}[]}%
+	{\ttl@labeltrue\@dblarg{#1{#2}}}}
+\makeatother
+
+\newcommand{\mrefs}[3][]{\hyperref[#3]{#2~\ref*{#3}#1}}	% e.g., \mrefs{Eqns.}{eqn:4:15}, or \mrefs[b]{Fig.}{fig:4:2} = Fig.~4.2b
+
+
+
+%Custom shortcuts
+%% define \permille as the unicode default input, set OT1 within group
+\newcommand{\permille}{\text{ ‰}} % \usefont automatically calls \selectfont; change to MinionPro-OsF to scale the permille symbol with OSF numbers; I'm using \text as a wrapper so that the command can be called in math mode directly, as well as in text mode.
+%\newcommand{\iso}[1]{\ce{^{#1}{S}}}
+%\newcommand{\eps}{$^{34}\varepsilon$}
+\newcommand{\tss}[1]{\textsuperscript{#1}}
+
+%DRAFTING
+\usepackage{datetime}
+%\includeonly{cover}
+%\PassOptionsToPackage{demo}{graphicx}
+\usepackage{lineno}
+\usepackage[printwatermark=false]{xwatermark}
+	\newwatermark[firstpage,lastpage,color=red!15,angle=45,scale=3,xpos=0,ypos=0]{DRAFT \protect\\ \scriptsize \yyyymmdddate\today\ :: \currenttime} 	% allpages, lastpage
+\usepackage{afterpage}	% allows lscape to float around, https://tex.stackexchange.com/a/262240/23509, https://tex.stackexchange.com/q/115112/23509
+%\usepackage{libertine}
+%\interfootnotelinepenalty=10000 	% inhibit splitting of footnotes, doesn't seem to work for Chap 3 footnotes
+%\usepackage{fnbreak}
+
+
+\begin{document}
+	
+%	\linenumbers
+	
+	\frontmatter*	
+	
+%	\include{cover}
+
+	\includepdf[pagecommand={\thispagestyle{empty}},
+	pages=1]{makecover.pdf}
+	
+	\includepdf[pagecommand={\thispagestyle{plain}},
+	pages=2-3]{makecover.pdf}
+	
+	\cleardoublepage
+	
+%	\title{The geochemistry of methane isotopologues}
+%	\author{David Texan Wang\thanks{MIT/WHOI Joint Program}}
+%	\date{May \nth{4}, 2017}
+%	
+%	\begin{titlingpage*}
+%		\aliaspagestyle{titlingpage}{plain}
+%		\setlength{\droptitle}{30pt}
+%		\maketitle
+%		\input{thesisabstract}
+%	\end{titlingpage*}
+	
+	%Column Separation
+%	\setlength{\columnsep}{2\columnsep}
+	
+%	\cleardoublepage
+%	\currentpdfbookmark{Table of Contents}{Table of Contents}
+	%\addcontentsline{toc}{chapter}{Contents}
+	\tableofcontents
+	\cleardoublepage
+%	\currentpdfbookmark{List of Figures}{List of Figures}
+	%\addcontentsline{toc}{chapter}{List of Figures}
+	\listoffigures
+	\cleardoublepage
+%	\currentpdfbookmark{List of Tables}{List of Tables}
+	\listoftables
+	%\addcontentsline{toc}{chapter}{List of Tables}
+	
+	\include{ack}
+	
+	\cleardoublepage
+	\mainmatter*
+	\include{ch1}
+	\include{ch2}
+	\include{ch3}
+	\include{ch4}
+	\include{ch5}
+	
+%	\nopartblankpage
+	\appendix
+	\appendixpage*
+%	\thispagestyle{plain}
+%	Text on the following (normally blank page)
+%	\clearpage
+	
+	\include{dxA}
+	\include{dxB}
+	\include{dxC}
+	
+%	\nocite{*}
+
+%\DeclareNameAlias{default}{last-first}
+	
+	\backmatter
+	\defbibnote{myprenote}{%{\scshape \textcolor{myred}{note}} \; 
+		\color{myred} \itshape \small Numbers listed in parentheses at the end of citations %\emph{(\textcolor{myred}{red})} 
+		refer to pages on which the work was cited.}
+	\renewcommand*{\bibfont}{\small}
+%	\printbibliography[prenote=myprenote,title=References]
+
+%\assignrefcontextentries[sorting=nyt]{*}
+	\begin{refcontext}[sorting=nyt]%,maxalphanames=1,labelalpha,maxbibnames=99]
+%	\raggedright
+	\printbibliography[prenote=myprenote,title=References]
+	\end{refcontext}
+
+	\cleartoevenpage
+	
+	\figureversion{osf}
+	\thispagestyle{empty}
+	\vspace*{0.3\textheight}
+	
+	\noindent \textsw{\bfseries The Geochemistry of Methane Isotopologues}\\
+	
+	\vspace{12pt}
+	
+	\noindent \textsc{David T. Wang}  \raisebox{-5pt}{\includegraphics[height=14pt]{figures/DTWcc}}
+	
+	\vspace{6pt}
+	
+	\noindent {\itshape E-mail}: \href{mailto:dtw@alum.mit.edu}{\nolinkurl{dtw@alum.mit.edu}}\\
+	{\textsc{orcid}}: \noindent\href{http://orcid.org/0000-0002-2656-8951}{\nolinkurl{0000-0002-2656-8951}}\\
+	
+	\vspace{12pt}
+	
+	\noindent Submitted \nth{5} May 2017\\
+	\noindent\textit{Cambridge, Massachusetts}\\
+	
+	\vspace*{\fill}
+	
+	\noindent {Prepared using \LaTeX{}.}
+	
+	
+	
+\end{document}
+
+
+
