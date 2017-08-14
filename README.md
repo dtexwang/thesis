@@ -4,7 +4,7 @@ The code in this repository typesets my Ph.D. dissertation —
 David T. Wang, MIT/WHOI Joint Program, June 2017 
 (doi: [10.1575/1912/9052](http://dx.doi.org/10.1575/1912/9052))
 
-**System** pdfLaTeX + BibLaTeX/Biber from the TeX Live 2016 distribution on Windows 7
+**System** — pdfLaTeX + BibLaTeX/Biber from the TeX Live 2016 distribution on Windows 7
 
 **Order of compilation**
 1. `pdflatex makecover` (× 2)
